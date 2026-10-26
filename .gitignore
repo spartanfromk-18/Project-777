@@ -24,3 +24,4 @@ coverage/
 # AI Studio / packaging junk — never in the repo
 .aistudio/
 *.zip
+.vercel
