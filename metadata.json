@@ -1,6 +1,0 @@
-{
-  "name": "ScamShield",
-  "description": "Is this message a scam? Find out in 10 seconds. ScamShield provides instant verdicts in simple Hinglish with exact red flags, scam autopsy, and family warnings.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
