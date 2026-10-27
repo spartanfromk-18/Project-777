@@ -10,18 +10,32 @@ coverage/
 
 # Logs
 *.log
+npm-debug.log*
 
 # OS files
 .DS_Store
+Thumbs.db
 
 # Environment files — NEVER commit a real key
+.env
+.env.*
 .env*
 !.env.example
 
 # Vercel
 .vercel/
+.vercel
 
 # AI Studio / packaging junk — never in the repo
 .aistudio/
 *.zip
-.vercel
+
+# --- Local engine binaries (backend hygiene, never commit) ---
+tools/
+ollama.exe
+ollama-models/
+
+# --- Temp dev files (backend scratch, never commit) ---
+_engine_test_page.html
+devtest-*
+*.tmp

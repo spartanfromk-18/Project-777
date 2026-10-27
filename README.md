@@ -1,21 +1,20 @@
 <div align="center">
 
-<img src="assets/hero.jpg" alt="ScamShield — a friendly shield detective with a magnifying glass, protecting an Indian family's phone" width="100%" />
-
 # 🛡️ ScamShield
 
-### Offline. Free. In your language.
+### MODE=local: offline. Honest verdicts. In your language.
 
 **Paste a suspicious message. Get an honest verdict, with proof — in Hinglish, on your own laptop.**
 
 <br/>
 
-![Offline](https://img.shields.io/badge/runs-100%25%20offline-E91E63?style=for-the-badge&logo=wifi&logoColor=white)
-![Free](https://img.shields.io/badge/cost-free%20forever-FF9F2E?style=for-the-badge)
+![MODE=local](https://img.shields.io/badge/MODE%3Dlocal-100%25%20offline-E91E63?style=for-the-badge&logo=wifi&logoColor=white)
+![MODE=local](https://img.shields.io/badge/MODE%3Dlocal-free%20forever-FF9F2E?style=for-the-badge)
 ![Hinglish](https://img.shields.io/badge/speaks-Hinglish-E91E63?style=for-the-badge)
-![Gemma](https://img.shields.io/badge/model-Gemma%204-FF9F2E?style=for-the-badge&logo=google&logoColor=white)
-![Ollama](https://img.shields.io/badge/runtime-Ollama-E91E63?style=for-the-badge)
-![Private](https://img.shields.io/badge/data-never%20leaves%20device-FF9F2E?style=for-the-badge&logo=letsencrypt&logoColor=white)
+![MODE=local](https://img.shields.io/badge/MODE%3Dlocal-model-Gemma%204-FF9F2E?style=for-the-badge&logo=google&logoColor=white)
+![MODE=api](https://img.shields.io/badge/MODE%3Dapi-model-gemma--4--26b--a4b--it-E91E63?style=for-the-badge&logo=google&logoColor=white)
+![MODE=local](https://img.shields.io/badge/MODE%3Dlocal-runtime-Ollama-E91E63?style=for-the-badge)
+![MODE=local](https://img.shields.io/badge/MODE%3Dlocal-data%20never%20leaves%20device-FF9F2E?style=for-the-badge&logo=letsencrypt&logoColor=white)
 
 <br/>
 
@@ -30,7 +29,7 @@
 
 </div>
 
-<img src="assets/divider.svg" width="100%" height="8" alt="" />
+---
 
 ## ⚡ At a glance
 
@@ -40,12 +39,12 @@
 | 📥 **Input** | Pasted text **or** a screenshot |
 | 📤 **Output** | A verdict card: verdict · quoted red flags · the trick · what to do |
 | 🗣️ **Language** | **Hinglish** — explanations a grandmother can follow |
-| 🧠 **Model** | **Gemma 4 E4B** (E2B as fast fallback), run locally via **Ollama** |
-| 🌐 **Network** | **None needed.** Works with Wi-Fi off |
-| 💸 **Cost** | **₹0** — no API key, no subscription, no per-check cost |
-| 🔒 **Privacy** | Message stays on your machine; screenshots are downscaled and **never stored** |
+| 🧠 **Model** | **MODE=local:** Gemma 4 E4B (E2B fast fallback) via **Ollama** · **MODE=api:** **gemma-4-26b-a4b-it** via **Gemini API** |
+| 🌐 **Network** | **MODE=local: none needed** — works with Wi-Fi off · **MODE=api:** one Gemini API call to get the verdict |
+| 💸 **Cost** | **MODE=local: ₹0** — no API key, no subscription, no per-check cost · **MODE=api:** Google AI Studio quota |
+| 🔒 **Privacy** | **MODE=local:** message never leaves your machine · **MODE=api:** message is sent **only** to get the verdict, **never stored, never logged** · screenshots downscaled, never stored |
 
-<img src="assets/divider.svg" width="100%" height="8" alt="" />
+---
 
 ## 📩 You have already got this message
 
@@ -70,31 +69,20 @@ And the tools that exist make it worse:
 
 | | ☁️ Cloud checkers | 🛡️ **ScamShield** |
 |---|:-:|:-:|
-| Needs internet | ❌ Yes | ✅ **No** |
-| Uploads your private message | ❌ Yes, to someone else's server | ✅ **Never** |
+| Needs internet | ❌ Yes | ✅ **No in MODE=local** (MODE=api needs the verdict call) |
+| Uploads your private message | ❌ Yes, to someone else's server | ✅ **Never stored** — in MODE=local it never leaves the device at all |
 | Cost per check | ❌ API / subscription | ✅ **Free** |
 | Explains *why* | ⚠️ Often just a label | ✅ **Quotes proof from the message** |
 | Language | ⚠️ Generic English | ✅ **Hinglish** |
 | Teaches the family | ❌ No | ✅ **Scam Autopsy + one-tap warning** |
 
-<img src="assets/divider.svg" width="100%" height="8" alt="" />
+---
 
 ## ✨ What it does
 
 **Paste a message or upload a screenshot.** ScamShield answers in **Hinglish**, with the **proof quoted from the message itself** — not just a label.
 
-<div align="center">
-<img src="assets/verdict-card.svg" alt="Example ScamShield verdict card: SCAM, with quoted red flags and next steps" width="85%" />
-</div>
-
 ### From panic to proof in three taps
-
-<table>
-<tr>
-<td width="42%" valign="middle">
-<img src="assets/three-taps.jpg" alt="Hand holding a phone showing a safe message and a warning message" width="100%" />
-</td>
-<td width="58%" valign="top">
 
 **1️⃣ &nbsp;Paste or screenshot**
 Drop the text in, or upload the screenshot. Gemma vision reads it for you.
@@ -104,10 +92,6 @@ Scam, suspicious or looks safe — with every red flag **quoted word for word**.
 
 **3️⃣ &nbsp;Know what to do**
 The trick named in Hinglish, next steps made clear, and reporting on **1930**.
-
-</td>
-</tr>
-</table>
 
 ## 🚦 Three honest verdicts
 
@@ -153,13 +137,9 @@ Never "100% safe". Always added: **still verify in the official app.**
 | 💬 **What if you reply?** | The **exact next line** they would use on you — **shown before they can use it** |
 | 👨‍👩‍👧 **Warn the family in one tap** | *"Mummy, yeh message mat kholna, ismein yeh 3 jhooth hain."* |
 
-<img src="assets/divider.svg" width="100%" height="8" alt="" />
+---
 
 ## 🧪 Try it yourself
-
-<table>
-<tr>
-<td width="56%" valign="top">
 
 ### 🎯 Pick a sample — no typing needed
 
@@ -172,16 +152,9 @@ Never "100% safe". Always added: **still verify in the official app.**
 | ✅ Genuine-style alert | 🟢 Looks safe |
 | ❓ Ambiguous delivery note | 🟠 Suspicious |
 
-### 📴 The Wi-Fi-off moment
+### 📴 The Wi-Fi-off moment (MODE=local)
 Turn the internet **off** and run the same check again.
-**Same verdict. Nothing left this laptop.**
-
-</td>
-<td width="44%" valign="middle">
-<img src="assets/family.jpg" alt="A joyful Indian family looking at a phone together" width="100%" />
-</td>
-</tr>
-</table>
+**Same verdict. Nothing left this laptop.** (MODE=api needs the internet for the Gemini API verdict call.)
 
 <details>
 <summary><b>🎬 60-second demo script (for judges &amp; reviewers)</b></summary>
@@ -192,12 +165,12 @@ Turn the internet **off** and run the same check again.
 2. **Open Scam Autopsy** and tap through each layer: impersonation → next ask → next line → family warning.
 3. Pick the *Genuine-style alert* → expect 🟢 **Looks safe**, plus the reminder to verify in the official app.
 4. Pick the *Ambiguous delivery note* → expect 🟠 **Suspicious**.
-5. **Turn Wi-Fi off.** Re-run any sample. Same verdict, no cloud.
+5. **Turn Wi-Fi off.** Re-run any sample (MODE=local). Same verdict, no cloud.
 6. Upload a **screenshot** of a message → Gemma vision reads it, the same verdict engine judges it.
 
 </details>
 
-<img src="assets/divider.svg" width="100%" height="8" alt="" />
+---
 
 ## 🌟 Why Gemma 4, why local, why now
 
@@ -205,7 +178,7 @@ Turn the internet **off** and run the same check again.
 <tr>
 <td width="33%" valign="top">
 
-#### 📴 Offline by design
+#### 📴 Offline by design (MODE=local)
 Works with Wi-Fi off, in a village, in a dead-signal hall. **No cloud, no waiting.**
 
 </td>
@@ -217,7 +190,7 @@ A scam message holds your personal details. **It should never be uploaded anywhe
 </td>
 <td width="33%" valign="top">
 
-#### 💸 Free for every family
+#### 💸 Free for every family (MODE=local)
 Open weights via Ollama. **No API key, no subscription, no per-check cost.**
 
 </td>
@@ -238,7 +211,7 @@ Gemma vision reads the screenshot, then **the same verdict engine** judges it.
 <td valign="top">
 
 #### ⚖️ Verdict, not chat
-A **fixed schema** — verdict, quoted flags, trick and action. **The model can never fake a result.**
+A **fixed schema** — verdict, quoted flags, trick and action. Off-schema or unproven answers are **demoted to SUSPICIOUS**, never shown as certain.
 
 </td>
 </tr>
@@ -246,7 +219,16 @@ A **fixed schema** — verdict, quoted flags, trick and action. **The model can 
 
 ## ⚙️ How it works
 
-**One laptop. Zero cloud.**
+> ### 🔌 Two honest modes — read this first
+>
+> | Mode | What honestly happens |
+> |---|---|
+> | **MODE=local** (Ollama, offline demo) | The message **never leaves the device** — Ollama + Gemma run on `localhost:11434`. Works with Wi-Fi off, ₹0, no key. |
+> | **MODE=api** (Gemini API backend) | The message **is sent to the Gemini API** (`gemma-4-26b-a4b-it`) **only to get the verdict** — it is **never stored, never logged**, and the key never leaves the backend `.env`. |
+>
+> The offline / free / nothing-leaves-the-device claims on this page are **true for MODE=local only**. In MODE=api the message must reach the Gemini API to be judged — we say that plainly.
+
+**MODE=local: one laptop, zero cloud.**
 
 ```mermaid
 flowchart LR
@@ -261,58 +243,57 @@ flowchart LR
     style E fill:#E91E63,stroke:#E91E63,color:#FFFFFF
 ```
 
-<table>
-<tr>
-<td width="55%" valign="top">
-
 ### 🧱 Design principles
 
 | Principle | In practice |
 |---|---|
-| **Verdict, not chat** | Output is a **fixed schema**, validated in code — the model can't free-style a fake result |
+| **Verdict, not chat** | Output is a **fixed schema**, validated in code — unproven answers become **SUSPICIOUS** |
 | **One call per check** | Fast, simple, cheap on a laptop |
 | **Fast fallback** | **E4B** by default, **E2B** when speed matters |
 | **Proof over labels** | Red flags are **quoted word for word** |
-| **Privacy by default** | Screenshots **downscaled, never stored** |
+| **Privacy by default** | Screenshots **downscaled, never stored** · MODE=local: nothing leaves the device |
 | **Honest uncertainty** | Never "100% safe"; *suspicious* is a valid answer |
-
-</td>
-<td width="45%" valign="middle">
-<img src="assets/under-the-hood.jpg" alt="A magnifying glass over the gears inside a chat bubble" width="100%" />
-</td>
-</tr>
-</table>
 
 ## 🚀 Run it locally
 
-> ⚠️ **Fill in the placeholders** (`< >`) with your project's real values.
+Zero npm dependencies — Node ≥ 18 is enough.
 
 ```bash
 # 1 — Install Ollama  →  https://ollama.com
-# 2 — Pull the Gemma 4 model
-ollama pull <your-gemma-4-e4b-tag>
-ollama pull <your-gemma-4-e2b-tag>     # optional: fast fallback
+ollama pull gemma4:e4b        # MODE=local primary model
+ollama pull gemma4:e2b        # optional: fast fallback
 
-# 3 — Get ScamShield
-git clone <your-repo-url>
-cd scamshield
+# 2 — Get ScamShield
+git clone https://github.com/spartanfromk-18/Project-777.git
+cd Project-777
 
-# 4 — Install & start
-<install command>
-<start command>
+# 3 — MODE=local (offline, no key): backend runs on the local Ollama
+MODE=local npm start          # → http://localhost:3000   (Wi-Fi off bhi same verdict)
+
+# 3b — MODE=api (Gemini API): copy the template and put YOUR key in .env
+cp .env.example .env          # .env is gitignored — key kabhi git me nahi jayegi
+npm start                     # → http://localhost:3000
 ```
 
-Open the app → pick a sample → **turn Wi-Fi off** → run it again. 🎉
+Tests:
+
+```bash
+npm test                       # 32 keyless mock-pipeline tests — validation, repair, fallbacks, adapter
+npm run test:golden            # LIVE golden run — real Gemini engine only; key missing = honest BLOCK
+```
+
+Open the app → pick a sample → **turn Wi-Fi off** (MODE=local) → run it again. 🎉
 
 <details>
-<summary><b>📁 Project structure</b> <sub>(fill in)</sub></summary>
+<summary><b>📁 Project structure</b></summary>
 
 ```text
-scamshield/
-├── <frontend>/        # UI: paste box, screenshot upload, verdict card, Autopsy
-├── <backend>/         # calls Ollama, validates the JSON schema
-├── <schema>/          # verdict · quoted flags · trick · action
-├── <samples>/         # six built-in demo cases
+Project-777/
+├── app.js              # window.ScamShield adapter — backend mode (POST /api/check) + offline file:// mode (direct Ollama)
+├── server.js           # zero-dependency backend: /api/check, /api/status, rate limit, CORS
+├── api/                # check.js (pipeline) · validate.js (SPEC v1.0) · gemini.js · ollama.js · engines/mock.js (TEST-ONLY)
+├── tests/              # mock.test.mjs (32 keyless tests) · golden.mjs (live golden run) · golden-cases.js (8 binding cases)
+├── .env.example        # GEMINI_API_KEY + MODE template (.env itself is gitignored)
 └── README.md
 ```
 
@@ -322,12 +303,12 @@ scamshield/
 
 <details>
 <summary><b>Is my message uploaded anywhere?</b></summary>
-<br/>No. The flow is Ollama on <code>localhost</code> → Gemma 4 → verdict card. There is no cloud call, and screenshots are downscaled and never stored.
+<br/><b>MODE=local:</b> No — the flow is Ollama on <code>localhost</code> → Gemma 4 → verdict card; nothing leaves the device. <b>MODE=api:</b> the message is sent to the Gemini API <i>only to get the verdict</i> — never stored, never logged, and the key stays in the backend's <code>.env</code>. Screenshots are downscaled and never stored in both modes.
 </details>
 
 <details>
 <summary><b>Does it really work without internet?</b></summary>
-<br/>Yes — that's the on-stage <i>Wi-Fi-off moment</i>. Same check, same verdict, nothing leaves the laptop.
+<br/>In <b>MODE=local</b>, yes — that's the on-stage <i>Wi-Fi-off moment</i>. Same check, same verdict, nothing leaves the laptop. <b>MODE=api</b> needs the internet for the Gemini API verdict call.
 </details>
 
 <details>
@@ -342,7 +323,7 @@ scamshield/
 
 <details>
 <summary><b>Can the model make up a verdict?</b></summary>
-<br/>No. Output is a fixed schema (verdict, quoted flags, trick, action) validated in code, so an off-format answer never reaches the verdict card.
+<br/>It can't fake certainty. Output is a fixed schema (verdict, quoted flags, trick, action) validated in code: off-format, unproven or mixed-signal answers are demoted to SUSPICIOUS, and a "safe" verdict always keeps a <i>verify in the official app</i> step.
 </details>
 
 <details>
@@ -350,7 +331,7 @@ scamshield/
 <br/>Not yet. Today the <b>laptop demo is the truth</b>; on-device Gemma E2B on the phone is on the roadmap, reusing the same schema and prompts.
 </details>
 
-<img src="assets/divider.svg" width="100%" height="8" alt="" />
+---
 
 ## 🗺️ Roadmap
 
@@ -360,7 +341,7 @@ An honest one.
 - [x] 🚦 **Three honest verdicts** with quoted red flags
 - [x] 🧬 **Scam Autopsy** — the whole playbook, layer by layer
 - [x] 🗣️ **Hinglish explanations** + one-tap family warning
-- [x] 🧪 **Six built-in samples** for no-typing demos
+- [x] 🧪 **Eight built-in samples** — 6 core + Hinglish + Devanagari, for no-typing demos
 - [ ] 📱 **On-device Gemma E2B** — same schema and prompts, on the phone
 
 > **Today, the laptop demo is the truth.**
@@ -382,9 +363,9 @@ ScamShield is a **decision aid, not an oracle**. A *looks safe* verdict is never
 ## 🤝 Contributing &amp; license
 
 Contributions, new scam patterns and Hinglish phrasing improvements are welcome — open an issue or a PR. <br/>
-**License:** `<your license>` &nbsp;·&nbsp; **Author:** `<your name>`
+**License:** MIT — see [LICENSE](LICENSE)
 
-<img src="assets/divider.svg" width="100%" height="8" alt="" />
+---
 
 <div align="center">
 
