@@ -152,8 +152,13 @@ function canonicalizeVerdict(raw, inputText) {
   if (!confidence) return { ok: false, reason: 'confidence missing or not High/Medium/Low' };
 
   // --- red flags: keep max 4, objects only, quote must be a verbatim substring of the input ---
+  // rawFlagCount counts EVERY red-flag entry the engine reported — including ones
+  // whose quote we could not trace and dropped. A LOOKS_SAFE reply that comes with
+  // ANY reported flag is mixed signals and must never survive as LOOKS_SAFE.
   let redFlags = [];
+  let rawFlagCount = 0;
   if (Array.isArray(raw.red_flags)) {
+    rawFlagCount = raw.red_flags.filter((item) => item && typeof item === 'object' && !Array.isArray(item)).length;
     for (const item of raw.red_flags.slice(0, MAX_REDFLAGS)) {
       if (!item || typeof item !== 'object' || Array.isArray(item)) continue;
       const quote = cap(item.quote, 200);
@@ -205,7 +210,9 @@ function canonicalizeVerdict(raw, inputText) {
   let finalConfidence = confidence;
 
   if (verdict === 'LOOKS_SAFE') {
-    if (redFlags.length > 0 || trick) {
+    // Highest-priority safety rule: a "safe" verdict that carries ANY red flag
+    // (traceable, or reported-but-untraceable) is mixed signals -> SUSPICIOUS.
+    if (redFlags.length > 0 || rawFlagCount > 0 || trick) {
       finalVerdict = 'SUSPICIOUS';
       finalConfidence = 'Low';
       if (!trick) trick = null;

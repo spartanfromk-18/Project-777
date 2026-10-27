@@ -39,6 +39,29 @@ const REPLIES = [
     }),
   },
   {
+    // Hinglish courier scam (golden case GH) — quotes verbatim from the GH text.
+    match: /150 rupaye ka charge|parcel customs me phasa/i,
+    reply: () => j({
+      verdict: 'SCAM',
+      confidence: 'High',
+      red_flags: [
+        { quote: 'Aapka parcel customs me phasa hai', why: 'Asli courier customs ka dar SMS se nahi dilata — fake urgency hai.' },
+        { quote: '150 rupaye ka charge bhejo turant', why: 'Chhoti fee ka demand — iske baad bade demand ka rasta.' },
+        { quote: 'warna parcel wapas bhej diya jayega', why: 'Dar ke saath jaldi karana, taaki aap bina soche paisa bhej do.' },
+        { quote: '98765 43210', why: 'Personal number par payment — asli courier kabhi aisa nahi karta.' },
+      ],
+      trick: 'Fake courier/customs fee scam',
+      scammer_wants: 'Pehle 150 rupaye ka charge le lena, phir "parcel" ke naam par aur paisa ya personal details maangna.',
+      next_steps: [
+        'Kisi unknown courier message par paisa mat bhejo.',
+        'Apna asli order official shopping app me khud check karo.',
+        'Number block karke 1930 (cybercrime.gov.in) par report karo.',
+      ],
+      family_warning: '"Parcel customs me phasa hai, 150 rupaye bhejo" — yeh courier scam hai. Asli courier message se fee nahi maangta. Ghar walon ko batao: aise message par payment bilkul nahi.',
+      summary: 'Hinglish courier scam — chhoti fee ka dar aur personal number par payment ka trap.',
+    }),
+  },
+  {
     match: /parcel is HELD|customs me phasa|parcel customs/i,
     reply: () => fenced({
       verdict: 'SCAM',
@@ -179,7 +202,7 @@ const TRIGGERS = [
     }) },
   { match: /MOCK_DIRTYWARNING/, reply: () => j({
       verdict: 'SCAM', confidence: 'High',
-      red_flags: [{ quote: 'MOCK_DIRTYWARNING test', why: 'Trigger flag.' }],
+      red_flags: [{ quote: 'MOCK_DIRTYWARNING case', why: 'Trigger flag — quote verbatim input se.' }],
       trick: 'Test scam',
       scammer_wants: 'Test.',
       next_steps: ['Click mat karo.', 'Verify officially.', '1930 par report karo.'],

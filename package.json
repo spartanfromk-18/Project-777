@@ -6,8 +6,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node --test tests/",
-    "test:mock": "node --test tests/",
+    "test": "node --test tests/mock.test.mjs",
+    "test:mock": "node --test tests/mock.test.mjs",
     "test:golden": "node tests/golden.mjs"
   },
   "engines": {

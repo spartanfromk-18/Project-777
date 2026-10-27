@@ -12,6 +12,13 @@ _engine_test_page.html
 devtest-*
 *.tmp
 
+# --- Local engine binaries, archives, logs (never commit) ---
+tools/
+ollama.exe
+ollama-models/
+*.zip
+*.log
+
 # --- OS junk ---
 .DS_Store
 Thumbs.db
