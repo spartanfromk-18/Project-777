@@ -26,6 +26,19 @@ const RATE_MAX = 20;
 
 const hits = new Map<string, number[]>();
 
+function logGeminiFailure(error: unknown, sampleType: 'text' | 'image', fallbackCode: string): void {
+  const details = error && typeof error === 'object' ? error as Record<string, unknown> : {};
+  const status = details.status ?? details.statusCode ?? (details.response as Record<string, unknown> | undefined)?.status ?? 'unknown';
+  const statusCode = typeof status === 'number' || typeof status === 'string' ? status : 'unknown';
+  const code = /timeout/i.test(String(details.message || '')) ? 'GEMINI_TIMEOUT' : fallbackCode;
+  console.error(JSON.stringify({
+    timestamp: new Date().toISOString(),
+    status: statusCode,
+    code,
+    sampleType,
+  }));
+}
+
 function rateLimited(ip: string): boolean {
   const now = Date.now();
   const list = (hits.get(ip) || []).filter((t) => now - t < RATE_WINDOW_MS);
@@ -103,7 +116,7 @@ CRITICAL RULES:
 
   const runCall = (promptStr: string) => {
     const timeout = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Gemma model request timed out')), 50000),
+      setTimeout(() => reject(new Error('Gemma model request timed out')), 45000),
     );
     return Promise.race([
       ai.models.generateContent({
@@ -162,8 +175,10 @@ export default async function handler(req: any, res: any) {
     });
   }
 
+  let sampleType: 'text' | 'image' = 'text';
   try {
     const { text, image } = req.body || {};
+    if (image && typeof image === 'string') sampleType = 'image';
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey || apiKey === 'MY_GEMINI_API_KEY' || apiKey.trim() === '') {
@@ -190,7 +205,8 @@ export default async function handler(req: any, res: any) {
         }
         analyzedText = extracted;
         textWasExtractedViaOcr = true;
-      } catch {
+      } catch (error) {
+        logGeminiFailure(error, sampleType, 'GEMINI_REQUEST_FAILED');
         return res.status(502).json({
           error: 'ENGINE_OFFLINE: Screenshot OCR failed. Please use Local Mode (rules engine) or paste text manually.',
           code: 'ENGINE_OFFLINE',
@@ -232,7 +248,8 @@ export default async function handler(req: any, res: any) {
       (sanitizedVerdict as any).extracted_text = analyzedText;
     }
     return res.json(sanitizedVerdict);
-  } catch {
+  } catch (error) {
+    logGeminiFailure(error, sampleType, 'GEMINI_HANDLER_FAILED');
     return res.status(500).json({
       error: 'ENGINE_OFFLINE: Unexpected error during verification. Switch to Local Mode (rules engine).',
       code: 'ENGINE_OFFLINE',
