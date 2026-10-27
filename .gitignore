@@ -1,24 +1,41 @@
-# --- Secrets: never commit ---
-.env
-.env.*
-!.env.example
-
-# --- Node ---
+# Dependencies
 node_modules/
+
+# Build outputs (Vercel builds these itself — don't commit them)
+build/
+dist/
+
+# Test coverage
+coverage/
+
+# Logs
+*.log
 npm-debug.log*
 
-# --- Temp dev files (never commit frontend or scratch files) ---
-_engine_test_page.html
-devtest-*
-*.tmp
+# OS files
+.DS_Store
+Thumbs.db
 
-# --- Local engine binaries, archives, logs (never commit) ---
+# Environment files — NEVER commit a real key
+.env
+.env.*
+.env*
+!.env.example
+
+# Vercel
+.vercel/
+.vercel
+
+# AI Studio / packaging junk — never in the repo
+.aistudio/
+*.zip
+
+# --- Local engine binaries (backend hygiene, never commit) ---
 tools/
 ollama.exe
 ollama-models/
-*.zip
-*.log
 
-# --- OS junk ---
-.DS_Store
-Thumbs.db
+# --- Temp dev files (backend scratch, never commit) ---
+_engine_test_page.html
+devtest-*
+*.tmp
