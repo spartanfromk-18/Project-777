@@ -15,7 +15,7 @@
 //   this is abuse friction for a demo, not a production-grade limiter.
 
 import { GoogleGenAI } from '@google/genai';
-import { validateAndEnforceVerdictRules } from '../src/utils/verdictValidator';
+import { validateAndEnforceVerdictRules } from '../src/utils/verdictValidator.js';
 
 export const config = { maxDuration: 55 };
 
