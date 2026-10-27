@@ -26,17 +26,34 @@ const RATE_MAX = 20;
 
 const hits = new Map<string, number[]>();
 
-function logGeminiFailure(error: unknown, sampleType: 'text' | 'image', fallbackCode: string): void {
+function logGeminiFailure(error: unknown, fallbackCode: string, attempt: number): void {
   const details = error && typeof error === 'object' ? error as Record<string, unknown> : {};
-  const status = details.status ?? details.statusCode ?? (details.response as Record<string, unknown> | undefined)?.status ?? 'unknown';
+  const nested = details.error && typeof details.error === 'object' ? details.error as Record<string, unknown> : {};
+  const response = details.response && typeof details.response === 'object' ? details.response as Record<string, unknown> : {};
+  const status = details.status ?? details.statusCode ?? nested.status ?? nested.statusCode ?? response.status ?? 'unknown';
   const statusCode = typeof status === 'number' || typeof status === 'string' ? status : 'unknown';
-  const code = /timeout/i.test(String(details.message || '')) ? 'GEMINI_TIMEOUT' : fallbackCode;
+  const statusText = String(statusCode);
+  const code = /timeout/i.test(String(details.message || ''))
+    ? 'GEMINI_TIMEOUT'
+    : statusText === '429'
+    ? 'GEMINI_429'
+    : statusText === '503'
+    ? 'GEMINI_503'
+    : fallbackCode;
   console.error(JSON.stringify({
     timestamp: new Date().toISOString(),
     status: statusCode,
     code,
-    sampleType,
+    attempt,
   }));
+}
+
+function isRetryableGeminiError(error: unknown): boolean {
+  const details = error && typeof error === 'object' ? error as Record<string, unknown> : {};
+  const nested = details.error && typeof details.error === 'object' ? details.error as Record<string, unknown> : {};
+  const response = details.response && typeof details.response === 'object' ? details.response as Record<string, unknown> : {};
+  const status = details.status ?? details.statusCode ?? nested.status ?? nested.statusCode ?? response.status;
+  return /timeout/i.test(String(details.message || '')) || String(status) === '429' || String(status) === '503';
 }
 
 function rateLimited(ip: string): boolean {
@@ -116,7 +133,7 @@ CRITICAL RULES:
 
   const runCall = (promptStr: string) => {
     const timeout = new Promise<never>((_, reject) =>
-      setTimeout(() => reject(new Error('Gemma model request timed out')), 45000),
+      setTimeout(() => reject(new Error('Gemma model request timed out')), 25000),
     );
     return Promise.race([
       ai.models.generateContent({
@@ -128,7 +145,20 @@ CRITICAL RULES:
     ]);
   };
 
-  const initial = await runCall(gemmaPrompt);
+  const runInitialCallWithRetry = async () => {
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        return await runCall(gemmaPrompt);
+      } catch (error) {
+        logGeminiFailure(error, 'GEMINI_REQUEST_FAILED', attempt);
+        if (attempt === 2 || !isRetryableGeminiError(error)) throw error;
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    }
+    throw new Error('Gemma request retry exhausted');
+  };
+
+  const initial = await runInitialCallWithRetry();
   const rawText = (initial.text || '').trim();
   try {
     return JSON.parse(rawText);
@@ -175,10 +205,8 @@ export default async function handler(req: any, res: any) {
     });
   }
 
-  let sampleType: 'text' | 'image' = 'text';
   try {
     const { text, image } = req.body || {};
-    if (image && typeof image === 'string') sampleType = 'image';
 
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey || apiKey === 'MY_GEMINI_API_KEY' || apiKey.trim() === '') {
@@ -206,7 +234,7 @@ export default async function handler(req: any, res: any) {
         analyzedText = extracted;
         textWasExtractedViaOcr = true;
       } catch (error) {
-        logGeminiFailure(error, sampleType, 'GEMINI_REQUEST_FAILED');
+        logGeminiFailure(error, 'GEMINI_REQUEST_FAILED', 1);
         return res.status(502).json({
           error: 'ENGINE_OFFLINE: Screenshot OCR failed. Please use Local Mode (rules engine) or paste text manually.',
           code: 'ENGINE_OFFLINE',
@@ -249,7 +277,7 @@ export default async function handler(req: any, res: any) {
     }
     return res.json(sanitizedVerdict);
   } catch (error) {
-    logGeminiFailure(error, sampleType, 'GEMINI_HANDLER_FAILED');
+    logGeminiFailure(error, 'GEMINI_HANDLER_FAILED', 2);
     return res.status(500).json({
       error: 'ENGINE_OFFLINE: Unexpected error during verification. Switch to Local Mode (rules engine).',
       code: 'ENGINE_OFFLINE',
