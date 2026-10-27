@@ -1,0 +1,17 @@
+{
+  "name": "scamshield",
+  "version": "1.0.0",
+  "private": true,
+  "description": "ScamShield — fraud detective for Indian families. Backend engine (Gemini API / local Ollama) + window.ScamShield frontend adapter.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/",
+    "test:mock": "node --test tests/",
+    "test:golden": "node tests/golden.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT"
+}
